@@ -140,7 +140,6 @@ def save_qualifying_loans(qualifying_loans):
         sys.exit("Okay, thank you for using the Loan Qualifying App!")
 
 
-
 def run():
     """The main function for running the script."""
 
