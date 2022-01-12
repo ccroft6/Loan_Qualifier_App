@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Loan Qualifier Application.
 
 This is a command line application to match applicants with qualifying loans.
@@ -7,6 +6,7 @@ Example:
     $ python app.py
 """
 import sys
+import csv
 import fire
 import questionary
 from pathlib import Path
@@ -107,9 +107,38 @@ def save_qualifying_loans(qualifying_loans):
 
     Args:
         qualifying_loans (list of lists): The qualifying bank loans.
+
     """
     # @TODO: Complete the usability dialog for savings the CSV Files.
-    # YOUR CODE HERE!
+    
+    if len(qualifying_loans) == 0:
+        sys.exit("Sorry, you do not qualify for any loans based on the information you entered.")
+    
+    if len(qualifying_loans) >= 1:
+        action = questionary.select(
+            "Do you want to save your list of qualifying loans as a .csv file?", 
+            choices=["yes", "no"],
+        ).ask() 
+    
+    if action == "yes":
+        save_csv = questionary.text("Enter a file path to a rate-sheet (.csv):").ask()
+        
+        header = ["Lender", "Max Loan Amount", "Max LTV" , "Max DTI" , "Min Credit Score", "Interest Rate"]
+        save_csv = Path("qualifiying_loans.csv")
+        with open(save_csv, "w", newline = "") as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(header)
+            for qualifying_loan in qualifying_loans:
+                csvwriter.writerow(qualifying_loan)
+        
+        print("Great! The list of loans you qualify for has been saved and can be found at the file path you entered.")
+        
+        if not save_csv.exists():
+            sys.exit(f"Oops! Can't find this path: {save_csv}")
+
+    elif action == "no":
+        sys.exit("Okay, thank you for using the Loan Qualifying App!")
+
 
 
 def run():
