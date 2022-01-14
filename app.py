@@ -109,7 +109,10 @@ def save_qualifying_loans(qualifying_loans):
         qualifying_loans (list of lists): The qualifying bank loans.
 
     """
-    # @TODO: Complete the usability dialog for savings the CSV Files.
+    # Complete the usability dialog for saving the CSV Files.
+
+    # If the length of the qualifying loans list is 0, write a sys exit message.
+    # If the length of the qualifying loans list is >0, ask if they want to save the list.
     
     if len(qualifying_loans) == 0:
         sys.exit("Sorry, you do not qualify for any loans based on the information you entered.")
@@ -120,11 +123,16 @@ def save_qualifying_loans(qualifying_loans):
             choices=["yes", "no"],
         ).ask() 
     
+    # Create different print statements depending on if they chose "yes" or "no".
+
+    # If they chose "yes", ask for the file path to save the list to and write the list to a csv file. 
+    # If they enter a file path that won't work/doesn't exist, write a sys exit message.
+
     if action == "yes":
         save_csv = questionary.text("Enter a file path to a rate-sheet (.csv):").ask()
         
         header = ["Lender", "Max Loan Amount", "Max LTV" , "Max DTI" , "Min Credit Score", "Interest Rate"]
-        save_csv = Path("qualifiying_loans.csv")
+        save_csv = Path(save_csv)
         with open(save_csv, "w", newline = "") as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(header)
@@ -132,9 +140,11 @@ def save_qualifying_loans(qualifying_loans):
                 csvwriter.writerow(qualifying_loan)
         
         print("Great! The list of loans you qualify for has been saved and can be found at the file path you entered.")
-        
+
         if not save_csv.exists():
             sys.exit(f"Oops! Can't find this path: {save_csv}")
+
+    #Else if they chose "no", write a sys exit message. 
 
     elif action == "no":
         sys.exit("Okay, thank you for using the Loan Qualifying App!")
