@@ -126,6 +126,7 @@ def save_qualifying_loans(qualifying_loans):
     # Create different print statements depending on if they chose "yes" or "no".
 
     # If they chose "yes", ask for the file path to save the list to and write the list to a csv file. 
+        # Write a print statement confirming that it saved the list.
     # If they enter a file path that won't work/doesn't exist, write a sys exit message.
 
     if action == "yes":
